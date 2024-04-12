@@ -13,7 +13,9 @@ class BookService {
             SOQUYEN: payload.SOQUYEN,
             NAMXUATBAN: payload.NAMXUATBAN,
             MANXB: payload.MANXB,
-            TACGIA: payload.TACGIA
+            TACGIA: payload.TACGIA,
+	    THELOAI: payload.THELOAI,
+	    HINHANH: payload.HINHANH
         };
 
         // Remove undefined fields
@@ -26,7 +28,7 @@ class BookService {
     generateID() {
         const chars = '0123456789';
         let result = '';
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 2; i++) {
             result += chars.charAt(Math.floor(Math.random() * chars.length));
         }
         return result;
@@ -48,7 +50,6 @@ class BookService {
         return result.value;
     }
 
-
     async find(filter){
         const cursor = await this.book.find(filter);
         return await cursor.toArray();
@@ -66,6 +67,23 @@ class BookService {
         });
     }
 
+    async findByMASACH(MASACH) {
+        const filter = { MASACH: MASACH };
+        const cursor = await this.book.find(filter);
+        return await cursor.toArray();
+    }
+
+    async updateByMASACH(MASACH, payload) {
+        const filter = { MASACH: MASACH }; 
+        const update = this.extractBookData(payload);
+        const result = await this.book.findOneAndUpdate(
+            filter,
+            { $set: update },
+            { returnDocument: "after" }
+        );
+        return result;
+    }
+
     async update(id,payload){
         const filter = {
             _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
@@ -79,7 +97,7 @@ class BookService {
         return result;
     }
 
-      async delete(id){
+    async delete(id){
         const result = await this.book.findOneAndDelete({
             _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
         });

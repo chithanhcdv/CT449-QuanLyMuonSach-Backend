@@ -26,7 +26,7 @@ class StaffService {
     generateID() {
         const chars = '0123456789';
         let result = '';
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 2; i++) {
             result += chars.charAt(Math.floor(Math.random() * chars.length));
         }
         return result;
@@ -62,6 +62,12 @@ class StaffService {
         return await this.staff.findOne({
             _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
         });
+    }
+
+     async findByMSNV(MSNV) {
+        const filter = { MSNV: MSNV };
+        const cursor = await this.staff.find(filter);
+        return await cursor.toArray();
     }
 
     async update(id,payload){

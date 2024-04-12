@@ -19,4 +19,5 @@ router.route("/register")
 router.route("/login")
     .post(staff.login)
 
+router.get("/manhanvien/:MSNV", staff.findByMSNV);
 module.exports = router;

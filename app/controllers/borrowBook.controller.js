@@ -47,6 +47,32 @@ exports.findOne = async (req, res, next) => {
     }
 };
 
+exports.findByMADOCGIA = async (req, res, next) => {
+    try {
+        const { MADOCGIA } = req.params;
+        const borrowBookService = new BorrowBookService(MongoDB.client);
+        const documents = await borrowBookService.findByMADOCGIA(MADOCGIA);
+        return res.send(documents);
+    } catch (error) {
+        return next(
+            new ApiError(500, "An error occurred while retrieving borrowBooks")
+        );
+    }
+};
+
+exports.findByMASACH = async (req, res, next) => {
+    try {
+        const { MASACH } = req.params;
+        const borrowBookService = new BorrowBookService(MongoDB.client);
+        const documents = await borrowBookService.findByMASACH(MASACH);
+        return res.send(documents);
+    } catch (error) {
+        return next(
+            new ApiError(500, "An error occurred while retrieving borrowBooks")
+        );
+    }
+};
+
 exports.update = async (req, res, next) => {
     if(Object.keys(req.body).length === 0){
         return next(new ApiError(400, "Data to update can not be empty"));

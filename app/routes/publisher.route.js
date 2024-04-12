@@ -13,4 +13,5 @@ router.route("/:id")
     .put(publisher.update)
     .delete(publisher.delete);
 
+router.get("/manxb/:MANXB", publisher.findByMANXB);
 module.exports = router;

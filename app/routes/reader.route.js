@@ -18,4 +18,5 @@ router.route("/register")
 router.route("/login")
     .post(reader.login)
 
+router.get("/madocgia/:MADOCGIA", reader.findByMADOCGIA);
 module.exports = router;

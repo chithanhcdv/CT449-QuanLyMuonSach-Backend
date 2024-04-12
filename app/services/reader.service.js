@@ -28,7 +28,7 @@ class ReaderService {
     generateID() {
         const chars = '0123456789';
         let result = '';
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 2; i++) {
             result += chars.charAt(Math.floor(Math.random() * chars.length));
         }
         return result;
@@ -43,6 +43,12 @@ class ReaderService {
         return await this.reader.findOne({
             _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
         });
+    }
+
+    async findByMADOCGIA(MADOCGIA) {
+        const filter = { MADOCGIA: MADOCGIA };
+        const cursor = await this.reader.find(filter);
+        return await cursor.toArray();
     }
 
     async update(id,payload){
@@ -96,7 +102,8 @@ class ReaderService {
             throw new Error("Incorrect password");
         }
 
-        return user;
+	const { MADOCGIA } = user; // Lấy MADOCGIA từ user
+    	return { MADOCGIA };
     }
 }
 

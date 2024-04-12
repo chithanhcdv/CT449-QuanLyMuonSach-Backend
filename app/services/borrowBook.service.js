@@ -9,6 +9,7 @@ class BorrowBookService {
         const borrowBook = {
             MADOCGIA: payload.MADOCGIA,
             MASACH: payload.MASACH,
+	        GHICHU: payload.GHICHU,
             NGAYMUON: payload.NGAYMUON,
             NGAYTRA: payload.NGAYTRA
         };
@@ -23,7 +24,7 @@ class BorrowBookService {
     generateID() {
         const chars = '0123456789';
         let result = '';
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 2; i++) {
             result += chars.charAt(Math.floor(Math.random() * chars.length));
         }
         return result;
@@ -48,6 +49,18 @@ class BorrowBookService {
         return await this.borrowBook.findOne({
             _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
         });
+    }
+
+    async findByMADOCGIA(MADOCGIA) {
+        const filter = { MADOCGIA: MADOCGIA };
+        const cursor = await this.borrowBook.find(filter);
+        return await cursor.toArray();
+    }
+
+    async findByMASACH(MASACH) {
+        const filter = { MASACH: MASACH };
+        const cursor = await this.borrowBook.find(filter);
+        return await cursor.toArray();
     }
 
     async update(id,payload){

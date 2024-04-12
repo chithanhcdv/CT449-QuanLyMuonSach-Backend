@@ -22,7 +22,7 @@ class PublisherService {
     generateID() {
         const chars = '0123456789';
         let result = '';
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 2; i++) {
             result += chars.charAt(Math.floor(Math.random() * chars.length));
         }
         return result;
@@ -59,6 +59,12 @@ class PublisherService {
         return await this.publisher.findOne({
             _id: ObjectId.isValid(id) ? new ObjectId(id) : null,
         });
+    }
+
+    async findByMANXB(MANXB) {
+        const filter = { MANXB: MANXB };
+        const cursor = await this.publisher.find(filter);
+        return await cursor.toArray();
     }
 
     async update(id,payload){

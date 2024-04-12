@@ -54,6 +54,19 @@ exports.update = async (req, res, next) => {
     }
 };
 
+exports.findByMADOCGIA = async (req, res, next) => {
+    try {
+        const { MADOCGIA } = req.params;
+        const readerService = new ReaderService(MongoDB.client);
+        const documents = await readerService.findByMADOCGIA(MADOCGIA);
+        return res.send(documents);
+    } catch (error) {
+        return next(
+            new ApiError(500, "An error occurred while retrieving Books")
+        );
+    }
+};
+
 exports.delete = async (req, res, next) => {
     try{
         const readerService = new ReaderService(MongoDB.client);
@@ -101,7 +114,8 @@ exports.login = async (req, res, next) => {
     try {
         const readerService = new ReaderService(MongoDB.client);
         const user = await readerService.login(USERNAME, PASSWORD);
-        return res.send({ message: "Login Successfully" });
+        // Trả về thông tin của người dùng trong phản hồi
+        return res.send({ message: "Login Successfully", user });
     } catch (error) {
         return next(
             new ApiError(401, "Invalid credentials")

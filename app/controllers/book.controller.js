@@ -56,6 +56,19 @@ exports.findOne = async (req, res, next) => {
     }
 };
 
+exports.findByMASACH = async (req, res, next) => {
+    try {
+        const { MASACH } = req.params;
+        const bookService = new BookService(MongoDB.client);
+        const documents = await bookService.findByMASACH(MASACH);
+        return res.send(documents);
+    } catch (error) {
+        return next(
+            new ApiError(500, "An error occurred while retrieving Books")
+        );
+    }
+};
+
 exports.update = async (req, res, next) => {
     if(Object.keys(req.body).length === 0){
         return next(new ApiError(400, "Data to update can not be empty"));
@@ -71,6 +84,26 @@ exports.update = async (req, res, next) => {
     } catch (error){
         return next(
             new ApiError(500, `Error updating book with id =${req.params.id}`)
+        );
+    }
+};
+
+exports.updateByMASACH = async (req, res, next) => {
+    if(Object.keys(req.body).length === 0){
+        return next(new ApiError(400, "Data to update can not be empty"));
+    }
+
+    try{
+        const { MASACH } = req.params;
+        const bookService = new BookService(MongoDB.client);
+        const document = await bookService.updateByMASACH(MASACH, req.body);
+        if(!document){
+            return next(new ApiError(404, "Book not found"));
+        }
+        return res.send({ message: "Book was update successfully"});
+    } catch (error){
+        return next(
+            new ApiError(500, `Error updating book with MASACH = ${MASACH}`)
         );
     }
 };

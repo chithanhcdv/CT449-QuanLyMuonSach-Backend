@@ -13,4 +13,6 @@ router.route("/:id")
     .put(book.update)
     .delete(book.delete);
 
+router.get("/masach/:MASACH", book.findByMASACH);
+router.put("/masach/:MASACH", book.updateByMASACH);
 module.exports = router;

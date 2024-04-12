@@ -13,4 +13,6 @@ router.route("/:id")
     .put(borrowBook.update)
     .delete(borrowBook.delete);
 
+router.get("/masach/:MASACH", borrowBook.findByMASACH);
+router.get("/madocgia/:MADOCGIA", borrowBook.findByMADOCGIA);
 module.exports = router;

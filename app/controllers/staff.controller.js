@@ -47,6 +47,19 @@ exports.findOne = async (req, res, next) => {
     }
 };
 
+exports.findByMSNV = async (req, res, next) => {
+    try {
+        const { MSNV } = req.params;
+        const staffService = new StaffService(MongoDB.client);
+        const documents = await staffService.findByMSNV(MSNV);
+        return res.send(documents);
+    } catch (error) {
+        return next(
+            new ApiError(500, "An error occurred while retrieving Books")
+        );
+    }
+};
+
 exports.update = async (req, res, next) => {
     if(Object.keys(req.body).length === 0){
         return next(new ApiError(400, "Data to update can not be empty"));
